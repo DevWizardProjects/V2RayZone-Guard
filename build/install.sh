@@ -8,10 +8,63 @@ CONF_FILE=/etc/torrent-guard.conf
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+ensure_go() {
+	if command -v go >/dev/null 2>&1; then
+		return
+	fi
+	echo "[install] Go toolchain not found; installing..."
+
+	# Try distro package manager first
+	if command -v apt-get >/dev/null 2>&1; then
+		DEBIAN_FRONTEND=noninteractive apt-get update -y || true
+		DEBIAN_FRONTEND=noninteractive apt-get install -y golang || \
+		DEBIAN_FRONTEND=noninteractive apt-get install -y golang-go || true
+	fi
+	if ! command -v go >/dev/null 2>&1; then
+		if command -v dnf >/dev/null 2>&1; then
+			dnf install -y golang || true
+		elif command -v yum >/dev/null 2>&1; then
+			yum install -y golang || true
+		elif command -v apk >/dev/null 2>&1; then
+			apk add --no-cache go || true
+		elif command -v pacman >/dev/null 2>&1; then
+			pacman -Sy --noconfirm go || true
+		fi
+	fi
+
+	# Fallback to official tarball
+	if ! command -v go >/dev/null 2>&1; then
+		GO_VERSION=${GO_VERSION:-1.22.6}
+		ARCH=$(uname -m)
+		case "$ARCH" in
+			x86_64|amd64) GOARCH=amd64 ;;
+			aarch64|arm64) GOARCH=arm64 ;;
+			*) echo "[install] unsupported arch: $ARCH; please install Go manually"; exit 1 ;;
+		esac
+		URL="https://go.dev/dl/go${GO_VERSION}.linux-${GOARCH}.tar.gz"
+		echo "[install] downloading Go ${GO_VERSION} for ${GOARCH}"
+		tmp=$(mktemp -d)
+		curl -fsSL "$URL" -o "$tmp/go.tgz"
+		rm -rf /usr/local/go
+		tar -C /usr/local -xzf "$tmp/go.tgz"
+		rm -rf "$tmp"
+		echo 'export PATH=/usr/local/go/bin:$PATH' > /etc/profile.d/go.sh
+		chmod 0644 /etc/profile.d/go.sh
+		export PATH=/usr/local/go/bin:$PATH
+	fi
+
+	if ! command -v go >/dev/null 2>&1; then
+		echo "[install] failed to install Go automatically; aborting"
+		exit 1
+	fi
+	go version || true
+}
+
 ensure_binaries() {
 	mkdir -p "$REPO_ROOT/bin"
 	if [[ ! -x "$REPO_ROOT/bin/tgctl" || ! -x "$REPO_ROOT/bin/tglogwatch" ]]; then
 		echo "[install] building Go binaries"
+		ensure_go
 		( cd "$REPO_ROOT" && GO111MODULE=on go build -o bin/tgctl ./cmd/tgctl )
 		( cd "$REPO_ROOT" && GO111MODULE=on go build -o bin/tglogwatch ./cmd/tglogwatch )
 	fi
