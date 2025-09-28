@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/DevWizardProjects/torrent-guard/internal/config"
+	"github.com/DevWizardProjects/V2RayZone-Guard/internal/config"
 )
 
 func sh(cmd string) error {
@@ -109,10 +109,10 @@ func menu() {
 			restartUnits()
 		case "8":
 			fmt.Println("Running installer...")
-			_ = sh("sudo bash /usr/local/src/torrent-guard/build/install.sh || sudo bash build/install.sh")
+			_ = sh("sudo bash /usr/local/src/V2RayZone-Guard/build/install.sh || sudo bash build/install.sh")
 		case "9":
 			fmt.Println("Uninstalling...")
-			_ = sh("sudo bash /usr/local/src/torrent-guard/build/install.sh uninstall || sudo bash build/install.sh uninstall")
+			_ = sh("sudo bash /usr/local/src/V2RayZone-Guard/build/install.sh uninstall || sudo bash build/install.sh uninstall")
 		case "s":
 			printConfig(readConfig())
 		case "t":

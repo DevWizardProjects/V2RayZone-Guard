@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="https://github.com/DevWizardProjects/torrent-guard.git"
-DEST_DIR="/usr/local/src/torrent-guard"
+REPO_URL="https://github.com/DevWizardProjects/V2RayZone-Guard.git"
+DEST_DIR="/usr/local/src/V2RayZone-Guard"
 
 need_root() {
 	if [[ ${EUID:-$(id -u)} -ne 0 ]]; then
@@ -25,12 +25,12 @@ fetch_repo() {
 	else
 		echo "[installer] git not found; downloading tarball"
 		tmpdir=$(mktemp -d)
-		curl -fsSL "https://github.com/DevWizardProjects/torrent-guard/archive/refs/heads/main.tar.gz" -o "$tmpdir/src.tgz"
+		curl -fsSL "https://github.com/DevWizardProjects/V2RayZone-Guard/archive/refs/heads/main.tar.gz" -o "$tmpdir/src.tgz"
 		tar -xzf "$tmpdir/src.tgz" -C "$tmpdir"
 		rm -rf "$DEST_DIR"
 		mkdir -p "$DEST_DIR"
 		shopt -s dotglob
-		mv "$tmpdir"/torrent-guard-main/* "$DEST_DIR"/
+		mv "$tmpdir"/V2RayZone-Guard-main/* "$DEST_DIR"/
 		rm -rf "$tmpdir"
 	fi
 }

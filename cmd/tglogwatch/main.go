@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/DevWizardProjects/torrent-guard/internal/config"
+	"github.com/DevWizardProjects/V2RayZone-Guard/internal/config"
 )
 
 func logf(format string, a ...any) {
