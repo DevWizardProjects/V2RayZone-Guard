@@ -10,7 +10,7 @@ What it does
 
 Install (one-liner)
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/V2rayZone/torrent-guard/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/DevWizardProjects/torrent-guard/main/install.sh)
 ```
 
 Quick usage

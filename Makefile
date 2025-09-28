@@ -1,6 +1,6 @@
 BIN_DIR := bin
 DIST_DIR := dist
-PKG := github.com/V2rayZone/torrent-guard
+PKG := github.com/DevWizardProjects/torrent-guard
 
 .PHONY: all build install uninstall fmt vet lint release clean
 

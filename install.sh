@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="https://github.com/V2rayZone/torrent-guard.git"
+REPO_URL="https://github.com/DevWizardProjects/torrent-guard.git"
 DEST_DIR="/usr/local/src/torrent-guard"
 
 need_root() {
@@ -25,7 +25,7 @@ fetch_repo() {
 	else
 		echo "[installer] git not found; downloading tarball"
 		tmpdir=$(mktemp -d)
-		curl -fsSL "https://github.com/V2rayZone/torrent-guard/archive/refs/heads/main.tar.gz" -o "$tmpdir/src.tgz"
+		curl -fsSL "https://github.com/DevWizardProjects/torrent-guard/archive/refs/heads/main.tar.gz" -o "$tmpdir/src.tgz"
 		tar -xzf "$tmpdir/src.tgz" -C "$tmpdir"
 		rm -rf "$DEST_DIR"
 		mkdir -p "$DEST_DIR"

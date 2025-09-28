@@ -1,4 +1,4 @@
-module github.com/V2rayZone/torrent-guard
+module github.com/DevWizardProjects/torrent-guard
 
 go 1.21
 

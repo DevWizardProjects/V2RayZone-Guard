@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/V2rayZone/torrent-guard/internal/config"
+	"github.com/DevWizardProjects/torrent-guard/internal/config"
 )
 
 func sh(cmd string) error {
