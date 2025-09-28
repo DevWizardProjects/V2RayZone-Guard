@@ -1,0 +1,20 @@
+[Unit]
+Description=Torrent Guard (iptables heuristic watcher)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/torrent_guard.sh
+Restart=always
+RestartSec=2s
+User=root
+Group=root
+AmbientCapabilities=CAP_NET_ADMIN
+CapabilityBoundingSet=CAP_NET_ADMIN
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+
+

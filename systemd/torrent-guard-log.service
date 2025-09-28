@@ -1,0 +1,18 @@
+[Unit]
+Description=Torrent Guard Log Monitor (x-ui access log watcher)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/tglogwatch
+Restart=always
+RestartSec=2s
+User=root
+Group=root
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+
+
