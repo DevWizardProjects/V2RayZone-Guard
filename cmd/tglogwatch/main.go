@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/DevWizardProjects/V2RayZone-Guard/internal/config"
@@ -14,7 +16,15 @@ func logf(format string, a ...any) {
 }
 
 func discoverService() string {
-	candidates := []string{"xray.service", "v2ray.service", "3x-ui.service"}
+	// Allow override via config SERVICE_NAME
+	if c, _ := config.Load(""); c != nil {
+		if n := strings.TrimSpace(os.Getenv("SERVICE_NAME")); n != "" {
+			return n
+		}
+		// Not using env? we could extend loader to read SERVICE_NAME later
+		_ = c
+	}
+	candidates := []string{"xray.service", "v2ray.service", "x-ui.service", "3x-ui.service"}
 	for _, s := range candidates {
 		cmd := exec.Command("bash", "-lc", fmt.Sprintf("systemctl list-unit-files | grep -q '^%s'", s))
 		if err := cmd.Run(); err == nil {

@@ -2,11 +2,16 @@
 set -euo pipefail
 
 CONF_FILE=/etc/torrent-guard.conf
-SERVICE_CANDIDATES=(xray.service v2ray.service 3x-ui.service)
+SERVICE_CANDIDATES=(xray.service v2ray.service x-ui.service 3x-ui.service)
 
 log() { echo "[torrent-guard] $*"; }
 
 discover_service() {
+	# Allow explicit override via config: SERVICE_NAME
+	if [[ -n "${SERVICE_NAME:-}" ]]; then
+		echo "$SERVICE_NAME"
+		return 0
+	fi
 	for s in "${SERVICE_CANDIDATES[@]}"; do
 		if systemctl list-unit-files | grep -q "^${s}"; then
 			echo "$s"
@@ -23,6 +28,7 @@ read_config() {
 	SLEEP_SEC=${SLEEP_SEC:-5}
 	COOLDOWN_SEC=${COOLDOWN_SEC:-60}
 	ENABLE_IPTABLES=${ENABLE_IPTABLES:-1}
+	SERVICE_NAME=${SERVICE_NAME:-}
 }
 
 sum_counters() {
